@@ -5,17 +5,20 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.todo.app.dto.request.TodoCreate;
+import com.todo.app.dto.response.ApiResponse;
 import com.todo.app.dto.response.TodoResponse;
 import com.todo.app.services.TodoService;
 
 @RestController
-@RequestMapping("/api/v1/todos")
+@RequestMapping("/api/v1/todo")
 public class TodoController {
     TodoService todoService;
     TodoController(TodoService todoService) {
@@ -23,28 +26,28 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<TodoResponse>> getTodos() {
-        return ResponseEntity.ok(todoService.getAllTodos());
+    public ResponseEntity<ApiResponse<List<TodoResponse>>> getTodos() {
+        return ResponseEntity.ok(new ApiResponse<>(true, todoService.getAllTodos(), "Todos retrieved successfully"));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TodoResponse> getTodoById(Long id) {
-        return ResponseEntity.ok(todoService.getTodoById(id));
+    public ResponseEntity<ApiResponse<TodoResponse>> getTodoById(@PathVariable Long id) {
+        return ResponseEntity.ok(new ApiResponse<>(true, todoService.getTodoById(id), "Todo retrieved successfully"));
     }
 
     @PostMapping
-    public ResponseEntity<TodoResponse> createTodo(TodoCreate todo) {
-        return ResponseEntity.ok(todoService.createTodo(todo));
+    public ResponseEntity<ApiResponse<TodoResponse>> createTodo(@RequestBody TodoCreate todo) {
+        return ResponseEntity.ok(new ApiResponse<>(true, todoService.createTodo(todo), "Todo created successfully"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TodoResponse> updateTodo(Long id, TodoCreate todo) {
-        return ResponseEntity.ok(todoService.updateTodo(id, todo));
+    public ResponseEntity<ApiResponse<TodoResponse>> updateTodo(@PathVariable Long id, @RequestBody TodoCreate todo) {
+        return ResponseEntity.ok(new ApiResponse<>(true, todoService.updateTodo(id, todo), "Todo updated successfully"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(Long id) {
+    public ResponseEntity<ApiResponse<String>> deleteTodo(@PathVariable Long id) {
         todoService.deleteTodo(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Todo deleted", "Todo deleted successfully"));
     }
 }
