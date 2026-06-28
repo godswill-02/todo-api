@@ -2,6 +2,7 @@ package com.todo.app.controllers.v1;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,8 @@ import com.todo.app.services.TodoService;
 @RestController
 @RequestMapping("/api/v1/todo")
 public class TodoController {
-    TodoService todoService;
+    private final TodoService todoService;
+
     TodoController(TodoService todoService) {
         this.todoService = todoService;
     }
@@ -37,7 +39,8 @@ public class TodoController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<TodoResponse>> createTodo(@RequestBody TodoCreate todo) {
-        return ResponseEntity.ok(new ApiResponse<>(true, todoService.createTodo(todo), "Todo created successfully"));
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(true, todoService.createTodo(todo), "Todo created successfully"));
     }
 
     @PutMapping("/{id}")

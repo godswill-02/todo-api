@@ -8,17 +8,20 @@ import com.todo.app.dto.request.TodoCreate;
 import com.todo.app.dto.response.TodoResponse;
 import com.todo.app.exceptions.TodoNotFoundException;
 import com.todo.app.mappers.TodoMapper;
+import com.todo.app.models.Content;
 import com.todo.app.models.Todo;
+import com.todo.app.models.enums.MediaType;
 import com.todo.app.repositories.TodoRepository;
 
 @Service
 public class TodoService implements ITodoService {
 
-    TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
-    TodoService(TodoRepository todoRepository){
+    TodoService(TodoRepository todoRepository) {
         this.todoRepository = todoRepository;
     }
+
     @Override
     public List<TodoResponse> getAllTodos() {
         final List<Todo> todos = todoRepository.findAll();
@@ -44,8 +47,15 @@ public class TodoService implements ITodoService {
         final Todo existingTodo = todoRepository.findById(id)
             .orElseThrow(() -> new TodoNotFoundException(id));
         existingTodo.setTitle(todo.getTitle());
-        existingTodo.setContent(todo.getContent());
         existingTodo.setCompleted(todo.isCompleted());
+
+        if (existingTodo.getContent() == null) {
+            existingTodo.setContent(new Content());
+        }
+
+        existingTodo.getContent().setMediaType(todo.getContent() != null ? todo.getContent() : MediaType.TEXT);
+        existingTodo.getContent().setContent(todo.getContentText() != null ? todo.getContentText() : "");
+
         final Todo updatedTodo = todoRepository.save(existingTodo);
         return TodoMapper.toTodoResponse(updatedTodo);
     }
@@ -56,5 +66,4 @@ public class TodoService implements ITodoService {
             .orElseThrow(() -> new TodoNotFoundException(id));
         todoRepository.delete(existingTodo);
     }
-    
 }
