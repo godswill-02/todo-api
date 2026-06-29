@@ -18,10 +18,10 @@ public class TodoMapper {
 
         if (todo.getContent() != null) {
             response.setMediaType(todo.getContent().getMediaType());
-            response.setContentText(todo.getContent().getContent());
+            response.setMedia(todo.getContent().getMedia());
         } else {
             response.setMediaType(MediaType.TEXT);
-            response.setContentText("");
+            response.setMedia("");
         }
 
         return response;
@@ -30,11 +30,11 @@ public class TodoMapper {
     public static Todo toTodoEntity(TodoCreate request) {
         Todo todo = new Todo();
         todo.setTitle(request.getTitle());
-        todo.setCompleted(request.isCompleted());
+        todo.setCompleted(request.isCompleted() ? request.isCompleted() : false);
 
         Content content = new Content();
-        content.setMediaType(request.getContent() != null ? request.getContent() : MediaType.TEXT);
-        content.setContent(request.getContentText() != null ? request.getContentText() : "");
+        content.setMediaType(request.getMediaType() != null ? request.getMediaType() : MediaType.TEXT);
+        content.setMedia(request.getMedia() != null ? request.getMedia() : "");
         todo.setContent(content);
 
         return todo;

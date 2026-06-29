@@ -32,8 +32,8 @@ public class Content {
     @Column(name = "media_type", nullable = false)
     private MediaType mediaType = MediaType.TEXT;
 
-    @Column(name = "content", nullable = false)
-    private String content = "";
+    @Column(name = "media", nullable = false)
+    private String media = "";
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)

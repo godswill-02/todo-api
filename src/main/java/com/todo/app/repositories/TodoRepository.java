@@ -9,5 +9,4 @@ import com.todo.app.models.Todo;
 
 @Repository
 public interface TodoRepository extends JpaRepository<Todo, Long> {
-    List<Todo> findByTitleContainingIgnoreCase(String title);
 }

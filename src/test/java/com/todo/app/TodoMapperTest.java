@@ -17,14 +17,14 @@ class TodoMapperTest {
     void toTodoEntity_shouldCreateContentEntityWithProvidedValues() {
         TodoCreate request = new TodoCreate();
         request.setTitle("Write docs");
-        request.setContent(MediaType.IMAGE);
-        request.setContentText("https://example.com/image.png");
+        request.setMediaType(MediaType.IMAGE);
+        request.setMedia("https://example.com/image.png");
 
         Todo todo = TodoMapper.toTodoEntity(request);
 
         assertThat(todo.getContent()).isNotNull();
         assertThat(todo.getContent().getMediaType()).isEqualTo(MediaType.IMAGE);
-        assertThat(todo.getContent().getContent()).isEqualTo("https://example.com/image.png");
+        assertThat(todo.getContent().getMedia()).isEqualTo("https://example.com/image.png");
     }
 
     @Test
@@ -34,12 +34,12 @@ class TodoMapperTest {
 
         Content content = new Content();
         content.setMediaType(MediaType.VIDEO);
-        content.setContent("https://example.com/video.mp4");
+        content.setMedia("https://example.com/video.mp4");
         todo.setContent(content);
 
         TodoResponse response = TodoMapper.toTodoResponse(todo);
 
         assertThat(response.getMediaType()).isEqualTo(MediaType.VIDEO);
-        assertThat(response.getContentText()).isEqualTo("https://example.com/video.mp4");
+        assertThat(response.getMedia()).isEqualTo("https://example.com/video.mp4");
     }
 }

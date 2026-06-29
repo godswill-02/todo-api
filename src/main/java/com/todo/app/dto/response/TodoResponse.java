@@ -9,7 +9,7 @@ public class TodoResponse {
     private Long id;
     private String title;
     private MediaType mediaType = MediaType.TEXT;
-    private String contentText = "";
+    private String media;
     private boolean completed;
     private String createdAt;
     private String updatedAt;
