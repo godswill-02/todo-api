@@ -11,7 +11,6 @@ import com.todo.app.exceptions.TodoNotFoundException;
 import com.todo.app.mappers.TodoMapper;
 import com.todo.app.models.Content;
 import com.todo.app.models.Todo;
-import com.todo.app.models.enums.MediaType;
 import com.todo.app.repositories.TodoRepository;
 import com.todo.app.validators.TodoContentValidator;
 
